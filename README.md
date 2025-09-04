@@ -1,5 +1,5 @@
 # Farmer_Suicide_India
-Analysis of State/UT wise Farmer Suicide cases in India 
+Analysis of State/UT wise Farmer Suicide cases in India.
 This project performs Exploratory Data Analysis (EDA) on a dataset tracking the number of farmer suicides across Indian States and Union Territories between 2017 and 2021.
 
 The objective is to:
