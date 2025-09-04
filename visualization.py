@@ -4,9 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# --------------------------
 # Step 1: Load & Clean Data
-# --------------------------
 df = pd.read_csv("RS_Session_259_AU_204_1.csv")
 
 # Drop unnecessary column
@@ -18,9 +16,7 @@ df.columns = ["State/UT", "2017", "2018", "2019", "2020", "2021"]
 # Fill missing values with 0
 df.fillna(0, inplace=True)
 
-# --------------------------
 # Step 2: Create Long Format
-# --------------------------
 df_long = df.melt(
     id_vars="State/UT",
     value_vars=["2017", "2018", "2019", "2020", "2021"],
@@ -29,15 +25,11 @@ df_long = df.melt(
 )
 df_long["Year"] = df_long["Year"].astype(int)
 
-# --------------------------
 # Step 3: Create Output Folder
-# --------------------------
 output_dir = "eda_outputs"
 os.makedirs(output_dir, exist_ok=True)
 
-# --------------------------
 # Step 4: Visualization 1 - National Trend
-# --------------------------
 sns.set_theme(style="whitegrid")
 national_trend = df_long.groupby("Year")["Farmers"].sum().reset_index()
 
@@ -50,9 +42,7 @@ plt.tight_layout()
 plt.savefig(f"{output_dir}/national_trend.png")
 plt.show()
 
-# --------------------------
 # Visualization 2 - Top/Bottom States in 2021
-# --------------------------
 state_2021 = df_long[df_long["Year"] == 2021].sort_values(by="Farmers", ascending=False)
 
 # Top 5
@@ -70,10 +60,7 @@ plt.title("Bottom 5 States with Fewest Farmers (2021)")
 plt.tight_layout()
 plt.savefig(f"{output_dir}/bottom5_states_2021.png")
 plt.show()
-
-# --------------------------
 # Visualization 3 - Change from 2017 to 2021
-# --------------------------
 df_change = df.copy()
 df_change["Change_2017_2021"] = df_change["2021"] - df_change["2017"]
 df_change_sorted = df_change.sort_values(by="Change_2017_2021", ascending=False)
@@ -86,9 +73,7 @@ plt.tight_layout()
 plt.savefig(f"{output_dir}/change_2017_2021.png")
 plt.show()
 
-# --------------------------
 # Step 5: Feature Engineering - YoY Growth & CAGR
-# --------------------------
 df_growth = df.copy()
 
 # YoY growth columns
@@ -103,7 +88,6 @@ df_growth["CAGR_2017_2021"] = df_growth.apply(
     lambda row: calculate_cagr(row["2017"], row["2021"], 4), axis=1
 )
 
-# Save growth stats to CSV
 df_growth.to_csv(f"{output_dir}/growth_summary.csv", index=False)
 
 # View top 5 states by CAGR
